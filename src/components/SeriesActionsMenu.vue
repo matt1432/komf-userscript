@@ -9,6 +9,9 @@
     <q-item clickable @click="promptResetSeries" v-close-popup>
       <q-item-section no-wrap>Reset Metadata</q-item-section>
     </q-item>
+    <q-item clickable @click="clearSeriesCache" v-close-popup>
+      <q-item-section no-wrap>Clear Cache</q-item-section>
+    </q-item>
   </q-menu>
 
   <q-dialog v-model="loading" maximized transition-duration="0">
@@ -105,6 +108,16 @@ async function autoIdentify() {
     loading.value = true
     try {
         await metadataService.matchSeries(libraryId(), seriesId())
+    } catch (e) {
+        errorNotification(e, $q)
+    }
+    loading.value = false
+}
+
+async function clearSeriesCache() {
+    loading.value = true
+    try {
+        await metadataService.clearSeriesCache(libraryId(), seriesId())
     } catch (e) {
         errorNotification(e, $q)
     }
