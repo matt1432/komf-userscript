@@ -83,6 +83,20 @@ export default class KomfMetadataService {
         }
     }
 
+    async clearSeriesIssuesCache(libraryId: string, seriesId: string) {
+        try {
+            await this.http.post(
+                `${this.settings.komfUrl}/${this.settings.mediaServer}/cache/library/${libraryId}/series/${seriesId}/clearissues`
+            )
+        } catch (e) {
+            let msg = 'Failed to clear series issues cache'
+            if (axios.isAxiosError(e)) {
+                msg += `: ${e.message}`
+            }
+            throw new Error(msg)
+        }
+    }
+
     async resetSeries(libraryId: string, seriesId: string) {
         try {
             await this.http.post(
